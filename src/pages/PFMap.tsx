@@ -1,17 +1,40 @@
 import React from 'react';
+//useEffect , useState
 import {Feather} from '@expo/vector-icons';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, { Marker, Callout,PROVIDER_GOOGLE} from 'react-native-maps';
 import mapMarker from '../images/pin.png';
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
+import { RectButton } from 'react-native-gesture-handler';
+//import api from '../services/api';
 
+/*interface Organization {
+  id: number;
+  name: string;
+  latitude:number;
+  longitude:number
+}*/
 
 export default function PFMap() {
+   // const [Organization,setOrganization]= useState<Organization[]>([]);
     const navigation = useNavigation();
 
+   /* useEffect(()=>{
+        api.get('/rota').then(response =>{
+          setOrganization(response.data);
+        });
+    },[]);*/
+
     function handleNavigateToPFDetails() {
-        navigation.navigate('PFDetails')
+        navigation.navigate('PFDetails');
     }
+
+    
+    function handleNavigateToCreateOrganization() {
+      navigation.navigate('SelectMapPosition');
+    }
+
+    
 
     return(
         <View style={styles.container}>
@@ -29,7 +52,7 @@ export default function PFMap() {
             icon={mapMarker}
             calloutAnchor= {{
               x: 2.7,
-              y: 8.8,
+              y: 0.8,//0.8
             }}
             coordinate={{
               latitude: -27.2092852, 
@@ -37,20 +60,20 @@ export default function PFMap() {
             }}
          >
            <Callout tooltip onPress={handleNavigateToPFDetails}>
-            <view style={styles.calloutContainer}>
-              <text style={styles.calloutText}>Tuzin Pub</text>
-            </view>
+            <View style={styles.calloutContainer}>
+              <Text style={styles.calloutText}>Tuzin Pub</Text>
+            </View>
            </Callout>
          </Marker>
-         
        </MapView>
 
-       <view style={styles.footer}>
-         <text style={styles.footerText}> 2 bares encontrados</text>
-        <TouchableOpacity style={styles.createOrganizationButton} onPress={() => {}}>
-            <Feather name="plus" size={20} color='#FFF'/>
-        </TouchableOpacity>
-       </view>
+       <View style={styles.footer}>
+         <Text style={styles.footerText}> 2 bares encontrados</Text>
+        <RectButton style={styles.createOrganizationButton} onPress={handleNavigateToCreateOrganization}>
+            <Feather name="plus" size={20} color="#FFF"/>
+        </RectButton>
+       </View>
+
     </View>
     );
 
@@ -77,7 +100,7 @@ const styles = StyleSheet.create({
   
     calloutText: {
       fontFamily: 'Nunito_700Bold',
-      color: '0089a5',
+      color: '#0089a5',
       fontSize: 14,
     },
   
@@ -89,7 +112,7 @@ const styles = StyleSheet.create({
       bottom: 32,
       backgroundColor:'#FFF',
       borderRadius: 20,
-      heigth: 56,
+      height: 56,
       paddingLeft: 24,
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -105,7 +128,7 @@ const styles = StyleSheet.create({
   
     createOrganizationButton: {
       width: 56,
-      heigth: 56,
+      height: 56,
       backgroundColor: '#15c3d6',
       borderRadius: 20,
       justifyContent: 'center',

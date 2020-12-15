@@ -31,7 +31,7 @@ export default function PFMap() {
 
     
     function handleNavigateToCreateOrganization() {
-      navigation.navigate('SelectMapPosition');
+      navigation.navigate('OrganizationData');
     }
 
     
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   
       footer: {
       position: 'absolute',
-      left: 24,
+      left: 24, 
       right: 24,
       bottom: 32,
       backgroundColor:'#FFF',

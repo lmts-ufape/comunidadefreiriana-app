@@ -7,6 +7,7 @@ const { Navigator, Screen } = createStackNavigator();
 import Map from './pages/PFMap';
 import Details from './pages/PFDetails';
 import Home from './pages/home';
+import PauloFreire from './pages/PauloFreire';
 
 import OrganizationData from './pages/createOrganization/OrganizationData';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
@@ -17,6 +18,11 @@ export default function Routes() {
             <Navigator initialRouteName= 'Home' screenOptions={{ headerShown: false, cardStyle:{backgroundColor:'#f2f3f5'}}}>
                 
                 <Screen 
+                name="PauloFreire"
+                component={PauloFreire}
+                />
+
+                <Screen 
                 name="Home"
                 component={Home}
                 />
@@ -24,6 +30,10 @@ export default function Routes() {
                 <Screen 
                 name="PFMap" 
                 component={Map}
+                options={{
+                    headerShown:true,
+                    header:()=><Header title="Mapa" />
+                }}                 
                 />
 
                 <Screen 
@@ -31,7 +41,7 @@ export default function Routes() {
                 component={Details}
                 options={{
                     headerShown:true,
-                    header:()=><Header showCancel={false} title="Paulo Freire" />
+                    header:()=><Header showCancel={false} title="Instituição" />
                 }}
                 />
 
@@ -40,7 +50,7 @@ export default function Routes() {
                 component={OrganizationData}
                 options={{
                     headerShown:true,
-                    header:()=><Header title="CADASTRO" />
+                    header:()=><Header title="SOLICITAR CADASTRO" />
                 }}
                 />
 

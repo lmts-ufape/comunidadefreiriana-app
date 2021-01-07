@@ -1,68 +1,93 @@
-import React from 'react';
+import React ,{useEffect, useState} from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import {useRoute} from '@react-navigation/native';
+import IconeTelefone from '../images/png/logo_telefone.png';
+import IconeEmail from '../images/png/logo_email.png';
 
-//import mapMarkerImg from '../images/map-marker.png';
-import { RectButton } from 'react-native-gesture-handler';
+
+import api from '../services/api';
+
+interface OrganizationDetailsRouteParams{
+  id:number;
+}
+
+interface Organization {
+  id:number;
+  nome:string;
+  email:String;
+  telefone:number;
+  cidade:String;
+  estado:String;
+  DatadeRealizacao: number;
+  NomedaRealizacao: String;
+  info:number;
+  latitude:number;
+  longitude:number;
+  images: Array<{
+    id:number;
+    url:string;
+  }>;
+}
 
 export default function PFDetails() {
+  const route = useRoute();
+  const [Organization, setOrganization] = useState<Organization>();
+  const params = route.params as OrganizationDetailsRouteParams;
+
+  useEffect(()=>{
+    api.get(`pfs/${params.id}`).then(response =>{
+      setOrganization(response.data);
+    })
+  },[params.id])
+
+  if (!Organization){
+    return(
+      <View style={styles.container}>
+        <Text style={styles.email}>Carregando....</Text>
+      </View>
+    )
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imagesContainer}>
         <ScrollView horizontal pagingEnabled>
-          <Image style={styles.image} source={{ uri: 'https://fmnova.com.br/images/noticias/safe_image.jpg' }} />
-          <Image style={styles.image} source={{ uri: 'https://fmnova.com.br/images/noticias/safe_image.jpg' }} />
-          <Image style={styles.image} source={{ uri: 'https://fmnova.com.br/images/noticias/safe_image.jpg' }} />
+          
+          {Organization.images.map(images =>{
+              return(
+                <Image
+                key={images.id} 
+                style={styles.image} 
+                source={{ uri: images.url }}
+                />
+
+              );
+          })}
+
+         
         </ScrollView>
       </View>
 
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>Orf. Esperança</Text>
-        <Text style={styles.description}>Presta assistência a crianças de 06 a 15 anos que se encontre em situação de risco e/ou vulnerabilidade social.</Text>
-      
-        <View style={styles.mapContainer}>
-          <MapView 
-            initialRegion={{
-              latitude: -27.2092052,
-              longitude: -49.6401092,
-              latitudeDelta: 0.008,
-              longitudeDelta: 0.008,
-            }} 
-            zoomEnabled={false}
-            pitchEnabled={false}
-            scrollEnabled={false}
-            rotateEnabled={false}
-            style={styles.mapStyle}
-          >
- 
-          </MapView>
+        <Text style={styles.NomeInstituicao}>{Organization.nome}</Text>
+        <Text style={styles.ntelefone}>{Organization.telefone}</Text>
+        <Image style={styles.IconeTelefone} source={IconeTelefone} />
+        <Text style={styles.email}>{Organization.email}</Text>
+        <Image style={styles.IconeEmail} source={IconeEmail} />
+        <Text style={styles.titulos}>Endereço</Text>
+        <Text style={styles.textos}>{Organization.cidade}</Text>
+        <Text style={styles.textos}>{Organization.estado}</Text>
+        <View style={styles.separator} /> 
+        <Text style={styles.titulos}>Data de Realização</Text>
+        <Text style={styles.textos}>{Organization.DatadeRealizacao}</Text>
+        <Text style={styles.titulos}>Nome da Realização</Text>
+        <Text style={styles.textos}>{Organization.NomedaRealizacao}</Text>
+        <Text style={styles.titulos}>Mais Informações</Text>
+        <Text style={styles.textos}>{Organization.info}</Text>
 
-          <View style={styles.routesContainer}>
-            <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
-          </View>
-        </View>
-      
-        <View style={styles.separator} />
 
-        <Text style={styles.title}>Instruções para visita</Text>
-        <Text style={styles.description}>Venha como se sentir a vontade e traga muito amor e paciência para dar.</Text>
 
-        <View style={styles.scheduleContainer}>
-          <View style={[styles.scheduleItem, styles.scheduleItemBlue]}>
-            <Feather name="clock" size={40} color="#2AB5D1" />
-            <Text style={[styles.scheduleText, styles.scheduleTextBlue]}>Segunda à Sexta 8h às 18h</Text>
-          </View>
-          <View style={[styles.scheduleItem, styles.scheduleItemGreen]}>
-            <Feather name="info" size={40} color="#39CC83" />
-            <Text style={[styles.scheduleText, styles.scheduleTextGreen]}>Atendemos fim de semana</Text>
-          </View>
-        </View>
 
-        <RectButton style={styles.contactButton} onPress={() => {}}>
-          <FontAwesome name="whatsapp" size={24} color="#FFF" />
-          <Text style={styles.contactButtonText}>Entrar em contato</Text>
-        </RectButton>
+
       </View>
     </ScrollView>
   )
@@ -79,7 +104,7 @@ const styles = StyleSheet.create({
 
   image: {
     width: Dimensions.get('window').width,
-    height: 240,
+    height: 180,
     resizeMode: 'cover',
   },
 
@@ -87,105 +112,68 @@ const styles = StyleSheet.create({
     padding: 24,
   },
 
-  title: {
-    color: '#4D6F80',
+  NomeInstituicao: {
+    color: '#0d0d0e',
     fontSize: 30,
     fontFamily: 'Nunito_700Bold',
+    marginTop:-80,
   },
 
-  description: {
+  ntelefone: {
     fontFamily: 'Nunito_600SemiBold',
-    color: '#5c8599',
+    color: '#9b9fa1',
+    fontSize:-9,
     lineHeight: 24,
-    marginTop: 16,
+    marginTop: 19,
+    left:35,
   },
-
-  mapContainer: {
-    borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1.2,
-    borderColor: '#B3DAE2',
-    marginTop: 40,
-    backgroundColor: '#E6F7FB',
+  email: {
+    fontFamily: 'Nunito_600SemiBold',
+    color: '#9b9fa1',
+    fontSize:-9,
+    lineHeight: 24,
+    marginTop: 5,
+    left:35,
   },
-
-  mapStyle: {
-    width: '100%',
-    height: 150,
+  titulos: {
+    fontFamily: 'Nunito_600SemiBold',
+    color: '#0f0f0f',
+    fontSize:16,
+    lineHeight: 24,
+    marginTop: 5,
+    
   },
-
-  routesContainer: {
-    padding: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+  textos: {
+    fontFamily: 'Nunito_600SemiBold',
+    color: '#9b9fa1',
+    fontSize:16,
+    lineHeight: 24,
+    marginTop: -5,
+    
   },
-
-  routesText: {
-    fontFamily: 'Nunito_700Bold',
-    color: '#0089a5'
-  },
+  
 
   separator: {
     height: 0.8,
     width: '100%',
-    backgroundColor: '#D3E2E6',
-    marginVertical: 40,
+    backgroundColor: '#8b8129',
+    marginVertical:10,
   },
 
-  scheduleContainer: {
-    marginTop: 24,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
+  IconeTelefone:{
+    position: 'absolute',
+    left:25,
+    width: 20,
+    height: 20,
+    marginTop: 5,
 
-  scheduleItem: {
-    width: '48%',
-    padding: 20,
   },
+  IconeEmail:{
+  position: 'absolute',
+  left:25,
+  width: 20,
+  height: 20,
+  marginTop: 35,
 
-  scheduleItemBlue: {
-    backgroundColor: '#E6F7FB',
-    borderWidth: 1,
-    borderColor: '#B3DAE2',
-    borderRadius: 20,
-  },
-
-  scheduleItemGreen: {
-    backgroundColor: '#EDFFF6',
-    borderWidth: 1,
-    borderColor: '#A1E9C5',
-    borderRadius: 20,
-  },
-
-  scheduleText: {
-    fontFamily: 'Nunito_600SemiBold',
-    fontSize: 16,
-    lineHeight: 24,
-    marginTop: 20,
-  },
-
-  scheduleTextBlue: {
-    color: '#5C8599'
-  },
-
-  scheduleTextGreen: {
-    color: '#37C77F'
-  },
-
-  contactButton: {
-    backgroundColor: '#3CDC8C',
-    borderRadius: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 56,
-    marginTop: 40,
-  },
-
-  contactButtonText: {
-    fontFamily: 'Nunito_800ExtraBold',
-    color: '#FFF',
-    fontSize: 16,
-    marginLeft: 16,
-  }
+}
 })

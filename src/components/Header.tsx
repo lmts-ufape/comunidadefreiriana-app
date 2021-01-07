@@ -14,7 +14,7 @@ export default function Header({title , showCancel=true}:HeaderProps){
     const navigation = useNavigation();
     
     function handleGoBackToAppHomePage(){
-        navigation.navigate('PFMap');
+        navigation.goBack();
     }
 
     return(
@@ -25,6 +25,8 @@ export default function Header({title , showCancel=true}:HeaderProps){
             </BorderlessButton>
 
             <Text style={styles.title}>{title}</Text>
+
+
         </View>
     );
 }
@@ -38,7 +40,7 @@ const styles =StyleSheet.create({
         paddingTop:44,
 
         flexDirection:'row',
-        justifyContent:'space-between',
+        justifyContent:'flex-start',
         alignItems:'center',
 
     },
@@ -48,6 +50,8 @@ const styles =StyleSheet.create({
         color:'#000000',
         fontSize:19,
         flexDirection: 'row',
-        paddingHorizontal: 100,
+        paddingHorizontal: 20,
     },
+    
+    
 })

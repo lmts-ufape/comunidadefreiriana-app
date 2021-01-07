@@ -1,32 +1,31 @@
-import React from 'react';
-//useEffect , useState
+import React,{useEffect , useState} from 'react';
 import {Feather} from '@expo/vector-icons';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, { Marker, Callout,PROVIDER_GOOGLE} from 'react-native-maps';
 import mapMarker from '../images/pin.png';
 import {useNavigation} from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
-//import api from '../services/api';
+import api from '../services/api';
 
-/*interface Organization {
+interface Organization {
   id: number;
-  name: string;
+  nome: string;
   latitude:number;
   longitude:number
-}*/
+}
 
 export default function PFMap() {
-   // const [Organization,setOrganization]= useState<Organization[]>([]);
+    const [Organizations,setOrganizations]= useState<Organization[]>([]);
     const navigation = useNavigation();
 
-   /* useEffect(()=>{
-        api.get('/rota').then(response =>{
-          setOrganization(response.data);
+    useEffect(()=>{
+        api.get('/pfs').then(response =>{
+          setOrganizations(response.data);
         });
-    },[]);*/
+    },[]);
 
-    function handleNavigateToPFDetails() {
-        navigation.navigate('PFDetails');
+    function handleNavigateToPFDetails(id:number) {
+        navigation.navigate('PFDetails',{id});
     }
 
     
@@ -42,39 +41,47 @@ export default function PFMap() {
                 provider={PROVIDER_GOOGLE}
                 style={styles.map} 
                 initialRegion={{
-                    latitude: -27.2092852, 
-                    longitude: -49.6401092,
+                    latitude: -8.9067535, 
+                    longitude: -36.4964962,
                     latitudeDelta: 0.008,
                     longitudeDelta: 0.008, 
                 }}
             >
-         <Marker
-            icon={mapMarker}
-            calloutAnchor= {{
-              x: 2.7,
-              y: 0.8,//0.8
-            }}
-            coordinate={{
-              latitude: -27.2092852, 
-              longitude: -49.6401092,
-            }}
-         >
-           <Callout tooltip onPress={handleNavigateToPFDetails}>
-            <View style={styles.calloutContainer}>
-              <Text style={styles.calloutText}>Tuzin Pub</Text>
+              
+              {Organizations.map(Organization =>{
+                return(
+                  <Marker
+                  key={Organization.id}
+                  icon={mapMarker}
+                  calloutAnchor= {{
+                    x: 2.7,
+                    y: 0.8,//0.8
+                  }}
+                  coordinate={{
+                    latitude: Organization.latitude, 
+                    longitude:Organization.longitude,
+                  }}
+               >
+                 <Callout tooltip onPress={() => handleNavigateToPFDetails(Organization.id)}>
+                  <View style={styles.calloutContainer}>
+                    <Text style={styles.calloutText}>{Organization.nome}</Text>
+                  </View>
+                 </Callout>
+               </Marker>
+                );
+              })}
+
+            </MapView>
+
+            <View style={styles.footer}>
+              
+              <RectButton style={styles.createOrganizationButton} onPress={handleNavigateToCreateOrganization}>
+                <Feather name="plus" size={25} color="#FFF"/>
+                <Text style={styles.buttonText}> Instituição</Text>
+              </RectButton>
             </View>
-           </Callout>
-         </Marker>
-       </MapView>
 
-       <View style={styles.footer}>
-         <Text style={styles.footerText}> 2 bares encontrados</Text>
-        <RectButton style={styles.createOrganizationButton} onPress={handleNavigateToCreateOrganization}>
-            <Feather name="plus" size={20} color="#FFF"/>
-        </RectButton>
-       </View>
-
-    </View>
+        </View>
     );
 
 }
@@ -107,18 +114,13 @@ const styles = StyleSheet.create({
   
       footer: {
       position: 'absolute',
-      left: 24, 
       right: 24,
       bottom: 32,
-      backgroundColor:'#FFF',
-      borderRadius: 20,
-      height: 56,
-      paddingLeft: 24,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       elevation: 10,
-  
+      borderRadius: 50,
     },
   
     footerText:{
@@ -127,12 +129,18 @@ const styles = StyleSheet.create({
     },
   
     createOrganizationButton: {
-      width: 56,
-      height: 56,
+      width: 116,
+      height: 40,
       backgroundColor: '#15c3d6',
-      borderRadius: 20,
+      borderRadius: 15,
       justifyContent: 'center',
       alignItems: 'center',
+      flexDirection: 'row',
     },
+
+    buttonText: {
+      color: '#fff',
+      fontSize: 15
+    }
   
   });

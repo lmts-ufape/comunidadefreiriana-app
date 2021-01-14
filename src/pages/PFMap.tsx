@@ -1,6 +1,6 @@
 import React,{useEffect , useState} from 'react';
 import {Feather} from '@expo/vector-icons';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TextInput, FlatList } from 'react-native';
 import MapView, { Marker, Callout,PROVIDER_GOOGLE} from 'react-native-maps';
 import mapMarker from '../images/pin.png';
 import {useNavigation} from '@react-navigation/native';
@@ -16,7 +16,9 @@ interface Organization {
 
 export default function PFMap() {
     const [Organizations,setOrganizations]= useState<Organization[]>([]);
+    const [FilterOrganizations,setFilterOrganizations]= useState<Organization[]>([]);
     const navigation = useNavigation();
+    const [search, setSearch] = useState('');
 
     useEffect(()=>{
         api.get('/pfs').then(response =>{
@@ -28,6 +30,51 @@ export default function PFMap() {
         navigation.navigate('PFDetails',{id});
     }
 
+    const searchFilterFunction = (text) => {
+      if (text) {
+        const newData = Organizations.filter(function (item) {
+          const itemData = item.nome
+            ? item.nome.toUpperCase()
+            : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        setFilterOrganizations(newData);
+        setSearch(text);
+      } else {
+        setFilterOrganizations(Organizations);
+        setSearch(text);
+      }
+    }
+
+    const ItemView = ({ item }) => {
+      return (
+        // Flat List Item
+        <Text style={{}} onPress={() => getItem(item)}>
+          {item.id}
+          {'.'}
+          {item.nome}
+        </Text>
+      );
+    }
+  
+    const getItem = (item) => {
+      // Function for click on an item
+      alert('Id : ' + item.id + ' Title : ' + item.nome);
+    };
+
+    const ItemSeparatorView = () => {
+      return (
+        // Flat List Item Separator
+        <View
+          style={{
+            height: 0.5,
+            width: '100%',
+            backgroundColor: '#C8C8C8',
+          }}
+        />
+      );
+    }
     
     function handleNavigateToCreateOrganization() {
       navigation.navigate('OrganizationData');
@@ -37,6 +84,25 @@ export default function PFMap() {
 
     return(
         <View style={styles.container}>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(text) => searchFilterFunction(text)}
+              value={search}
+              underlineColorAndroid="transparent"
+              placeholder="Pesquisar..."
+              onFocus={() => {}}
+            />
+            <RectButton style={styles.search} onPress={(text) => searchFilterFunction(text)}>
+              <Feather name="search" size={25} color="#FFF"/>
+            </RectButton>
+          </View>
+          <FlatList
+            data={FilterOrganizations}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            renderItem={ItemView}
+          />
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.map} 
@@ -94,6 +160,35 @@ const styles = StyleSheet.create({
     map:{
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+    },
+
+    searchContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 10
+    },
+
+    textInput: {
+      height: 40,
+      borderWidth: 1,
+      paddingLeft: 15,
+      margin: 5,
+      borderColor: '#aaa',
+      borderRadius: 10,
+      backgroundColor: '#FFFFFF',
+      position: 'relative',
+      flex: 1
+    },
+
+    search: {
+      width: 40,
+      height: 40,
+      backgroundColor: '#f00',
+      borderRadius: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
     },
   
     calloutContainer: {

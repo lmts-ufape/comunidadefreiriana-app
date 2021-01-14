@@ -19,92 +19,84 @@ export default function PauloFreire() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.buttonContainer}>
 
-      <View style={styles.row}>
-        
-          <RectButton  onPress={ () => {}}>
-            <Image style={styles.iconeConheca} source={iconeConheca} />
-            <Text style={{fontSize:15.5, textAlign:'center'}}>Ataques</Text>
-          </RectButton>
+        <View style={styles.row}>
+            <RectButton style={styles.cardPF} onPress={ () => {}}>
+              <Image style={styles.iconeConheca} source={iconeConheca} />
+              <Text style={styles.cardTextPF}>Conheça {'\n'}Paulo Freire</Text>
+            </RectButton>
 
-          <RectButton  onPress={ () => {}}>
-            <Image style={styles.iconeLTempo} source={iconeLinha} />
-            <Text style={styles.textContent}>Linha do Tempo</Text>
-          </RectButton>          
+            <RectButton style={styles.card} onPress={ () => {}}>
+              <Image style={styles.iconeLTempo} source={iconeLinha} />
+              <Text style={styles.cardText}>Linha do Tempo</Text>
+            </RectButton>          
+        </View>
+
+        <View style={styles.row}>
+            <RectButton style={styles.card} onPress={ () => {}}>
+              <Image style={styles.iconeAcervo} source={iconeAcervo} />
+              <Text style={styles.cardText}>Acervo Digital</Text>
+            </RectButton>
+
+            <RectButton style={styles.card} onPress={ () => {}}>
+              <Image style={styles.iconeBibli} source={iconeBibli} />
+              <Text style={styles.cardText}>Biblioteca</Text>
+            </RectButton>        
+
+        </View>
+
+        <View style={styles.row}>
+            <RectButton style={styles.card} onPress={ () => {}}>
+              <Image style={styles.iconeAcervo} source={iconeGlossario} />
+              <Text style={styles.cardText}>Glossário</Text>
+            </RectButton>
+
+            <RectButton style={styles.card} onPress={ () => {}}>
+              <Image style={styles.iconeAcervo} source={iconeContato} />
+              <Text style={styles.cardText}>Contato</Text>
+            </RectButton>        
+
+        </View>
       </View>
 
-      <View style={styles.row}>
-          <RectButton  onPress={ () => {}}>
-            <Image style={styles.iconeAcervo} source={iconeAcervo} />
-            <Text style={{fontSize:15.5}}>Acervo Digital</Text>
-          </RectButton>
+      <View style={styles.footer}>
+        <View style={styles.instituto}>
+          <Text style={styles.footerText}>Realização:</Text>
+          <Image style={styles.iconeInstituto} source={iconeInstituto} />
+        </View>
 
-          <RectButton  onPress={ () => {}}>
-            <Image style={styles.iconeBibli} source={iconeBibli} />
-            <Text style={{fontSize:15.5}}>Biblioteca</Text>
-          </RectButton>        
+        <View style={styles.lmts}>
+          <Text style={styles.footerText}>Desenvolvido por:</Text>
+          <View style={styles.row}>
 
-      </View>
-
-      <View style={styles.row}>
-          <RectButton  onPress={ () => {}}>
-            <Image style={styles.iconeAcervo} source={iconeGlossario} />
-            <Text style={{fontSize:15.5}}>Glossario</Text>
-          </RectButton>
-
-          <RectButton  onPress={ () => {}}>
-            <Image style={styles.iconeAcervo} source={iconeContato} />
-            <Text style={{fontSize:15.5}}>Contato</Text>
-          </RectButton>        
-
-      </View>
-     
-        <View style={styles.footer}>
-          <View style={styles.instituto}>
-            <Text style={styles.footerText}>Realização:</Text>
-            <Image style={styles.iconeInstituto} source={iconeInstituto} />
-          </View>
-
-          <View style={styles.lmts}>
-            <Text style={styles.footerText}>Desenvolvido por:</Text>
-            <View style={styles.row}>
-
-              <RectButton  onPress={ () => Linking.openURL('http://ufape.edu.br/')}>
-                <Image style={styles.iconeUfape} source={iconeUfape} />
-              </RectButton>
-              
-              <RectButton  onPress={ () => Linking.openURL('http://lmts.uag.ufrpe.br/')}>
-                <Image style={styles.image2} source={lmts} />
-              </RectButton>
-            </View>
+            <RectButton  onPress={ () => Linking.openURL('http://ufape.edu.br/')}>
+              <Image style={styles.iconeUfape} source={iconeUfape} />
+            </RectButton>
+            
+            <RectButton  onPress={ () => Linking.openURL('http://lmts.uag.ufrpe.br/')}>
+              <Image style={styles.image2} source={lmts} />
+            </RectButton>
           </View>
         </View>
-    
-
       </View>
-  );
+
+    </View>
+    );
 }
 
 const styles = StyleSheet.create({
 
-  textContent: {
-    fontSize: 15,
-  },
-
   iconeBibli: {
-    width: 80,
-    height: 120,
-    paddingLeft:20,
+    width: 50,
+    height: 100,
     resizeMode:'contain',
-    left: 30,
   },
 
   iconeConheca:{
-    width: 100,
-    height: 140,
-    paddingLeft:20,
+    width: '100%',
+    height: '100%',
     resizeMode:'contain',
-    borderRadius: 10
   },
 
   rowContent:{
@@ -131,22 +123,21 @@ const styles = StyleSheet.create({
   },
 
   iconeAcervo:{
-    width: 80,
-    height: 140,
-    paddingRight:4,
+    width: 60,
+    height: 100,
     resizeMode:'contain',
   },
   iconeLTempo:{
-    width: 100,
-    height: 140,
-    left:40,
+    width: 70,
+    height: 100,
     resizeMode:'contain',
   },
 
   row: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    marginHorizontal: 25
   },
 
   iconeInstituto :{
@@ -167,15 +158,59 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
+  },
+
+  buttonContainer: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    marginTop: 10
+  },
+
+  card: {
+    width: 150,
+    height: 150,
+    backgroundColor: '#eee',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    borderRadius: 20,
+    elevation: 10,
+    marginBottom: 10,
+    padding: 10
+  },
+
+  cardPF: {
+    width: 150,
+    height: 150,
+    backgroundColor: '#eee',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    elevation: 10,
+    marginBottom: 10,
+  },
+
+  cardText: {
+    fontSize:15.5,
+    alignSelf: 'flex-start'
+  },
+
+  cardTextPF: {
+    fontSize: 14.5,
+    alignSelf: 'flex-start',
+    position: 'absolute',
+    backgroundColor: '#555',
+    color: '#fff',
+    padding: 2,
+    bottom: 5,
+    left: 5,
+    fontWeight: 'bold'
   },
 
   footer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      marginTop: 10
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    margin: 10,
+    backgroundColor: '#FFF',
   },
 })

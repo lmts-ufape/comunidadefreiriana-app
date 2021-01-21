@@ -1,29 +1,40 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet, Switch, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import React ,{useEffect, useState} from 'react';
+import { ScrollView, View, StyleSheet, Text, TextInput, Picker } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 export default function OrganizationData() {
+
+  const [category, setCategory] = useState();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: 24 }}>
 
 
-      <Text style={styles.label}>Nome</Text>
+      <Text style={styles.label}>Nome/Título</Text>
       <TextInput
         style={styles.input}
       />
 
-      <Text style={styles.label}>Telefone (Com DDD)</Text>
-      <TextInput
-        style={styles.input}
-      />
+      <Picker 
+        style={styles.label} 
+        selectedValue={category} 
+        onValueChange={
+          (itemValor, itemIndex) =>
+            setCategory(
+              itemValor
+            )
+      }>
+        <Picker.Item label="Categoria" value=""/>
+        <Picker.Item label="Cátedrais Paulo Freire" value="Cátedrais Paulo Freire"/>
+        <Picker.Item label="Instituto Paulo Freire" value="Instituto Paulo Freire"/>
+        <Picker.Item label="Centros e Núcleos de Estudos e Pesquisas" value="Centros e Núcleos de Estudos e Pesquisas"/>
+        <Picker.Item label="Homenagens" value="Homenagens"/>
+        <Picker.Item label="Projetos" value="Projetos"/>
 
-      <Text style={styles.label}>E-mail</Text>
-      <TextInput
-        style={styles.input}
-      />
 
-      <Text style={styles.label}>Cidade</Text>
+      </Picker>
+
+      <Text style={styles.label}>País</Text>
       <TextInput
         style={styles.input}
       />
@@ -33,12 +44,42 @@ export default function OrganizationData() {
         style={styles.input}
       />
 
-      <Text style={styles.label}>Data da realizaçao</Text>
+      <Text style={styles.label}>Cidade</Text>
       <TextInput
         style={styles.input}
       />
 
-      <Text style={styles.label}>Nome da realizaçao</Text>
+      <Text style={styles.label}>Endereço</Text>
+      <TextInput
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>CEP</Text>
+      <TextInput
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Telefone(s)-(Opcional)</Text>
+      <TextInput
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>E-mail</Text>
+      <TextInput
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Site - (Opcional)</Text>
+      <TextInput
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Coordenador</Text>
+      <TextInput
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Data da realização</Text>
       <TextInput
         style={styles.input}
       />

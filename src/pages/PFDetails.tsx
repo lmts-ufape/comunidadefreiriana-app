@@ -2,7 +2,8 @@ import React ,{useEffect, useState} from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import IconeTelefone from '../images/png/logo_telefone.png';
-import IconeEmail from '../images/png/logo_email.png';
+import IconeSite from '../images/png/logo_email.png';
+import IconeEmail from '../images/png/mail.png';
 
 
 import api from '../services/api';
@@ -15,12 +16,18 @@ interface Organization {
   id:number;
   nome:string;
   email:String;
-  telefone:number;
+  coordenador:string;
+  pais:string;
+  site:String;
+  telefones:number;
   cidade:String;
   estado:String;
+  endereco:String;
   DatadeRealizacao: number;
   NomedaRealizacao: String;
+  datafundacao:number;
   info:number;
+  categoria:string;
   latitude:number;
   longitude:number;
   images: Array<{
@@ -43,7 +50,7 @@ export default function PFDetails() {
   if (!Organization){
     return(
       <View style={styles.container}>
-        <Text style={styles.email}>Carregando....</Text>
+        <Text style={styles.site}>Carregando....</Text>
       </View>
     )
   }
@@ -69,18 +76,41 @@ export default function PFDetails() {
 
       <View style={styles.detailsContainer}>
         <Text style={styles.NomeInstituicao}>{Organization.nome}</Text>
-        <Text style={styles.ntelefone}>{Organization.telefone}</Text>
+
+        <Text style={styles.ntelefone}>{Organization.telefones}</Text>
         <Image style={styles.IconeTelefone} source={IconeTelefone} />
+
+        <Text style={styles.site}>{Organization.site}</Text>
+        <Image style={styles.IconeSite} source={IconeSite} />
+
         <Text style={styles.email}>{Organization.email}</Text>
         <Image style={styles.IconeEmail} source={IconeEmail} />
-        <Text style={styles.titulos}>Endereço</Text>
-        <Text style={styles.textos}>{Organization.cidade}</Text>
-        <Text style={styles.textos}>{Organization.estado}</Text>
         <View style={styles.separator} /> 
+
+        <Text style={styles.titulos}>Endereço</Text>
+        <Text style={styles.textos}>{Organization.endereco}</Text>
+        <Text style={styles.textos}>{Organization.cidade} - {Organization.estado}</Text>
+        <Text style={styles.textos}>{Organization.pais}</Text>
+        <View style={styles.separator} /> 
+        
+        
         <Text style={styles.titulos}>Data de Realização</Text>
         <Text style={styles.textos}>{Organization.DatadeRealizacao}</Text>
+
         <Text style={styles.titulos}>Nome da Realização</Text>
         <Text style={styles.textos}>{Organization.NomedaRealizacao}</Text>
+
+
+        <Text style={styles.titulos}>Data de fundação</Text>
+        <Text style={styles.textos}>{Organization.datafundacao}</Text>
+
+
+        <Text style={styles.titulos}>Categoria</Text>
+        <Text style={styles.textos}>{Organization.categoria}</Text>
+
+        <Text style={styles.titulos}>Coordenador</Text>
+        <Text style={styles.textos}>{Organization.coordenador}</Text>
+
         <Text style={styles.titulos}>Mais Informações</Text>
         <Text style={styles.textos}>{Organization.info}</Text>
 
@@ -127,6 +157,14 @@ const styles = StyleSheet.create({
     marginTop: 19,
     left:35,
   },
+  site: {
+    fontFamily: 'Nunito_600SemiBold',
+    color: '#9b9fa1',
+    fontSize:-9,
+    lineHeight: 24,
+    marginTop: 5,
+    left:35,
+  },
   email: {
     fontFamily: 'Nunito_600SemiBold',
     color: '#9b9fa1',
@@ -168,12 +206,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
 
   },
-  IconeEmail:{
+IconeSite:{
   position: 'absolute',
   left:25,
   width: 20,
-  height: 20,
+  height: 20,  
   marginTop: 35,
+
+},
+IconeEmail:{
+  position: 'absolute',
+  left:25,
+  width: 20,
+  height: 20,  
+  marginTop: 65,
 
 }
 })

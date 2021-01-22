@@ -20,6 +20,10 @@ export default function Routes() {
                 <Screen 
                 name="PauloFreire"
                 component={PauloFreire}
+                options={{
+                    headerShown:true,
+                    header:()=><Header title="Conheça Paulo Freire" />
+                }}   
                 />
 
                 <Screen 

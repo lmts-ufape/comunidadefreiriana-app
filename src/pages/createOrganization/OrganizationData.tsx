@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import React ,{useEffect, useState} from 'react';
-import { ScrollView, View, StyleSheet, Text, TextInput, Picker } from 'react-native';
-=======
 import React, { useState } from 'react';
-import { ScrollView, View, StyleSheet, Switch, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ScrollView, View, StyleSheet, Switch, Text, TextInput, TouchableOpacity, Picker } from 'react-native';
 import { Feather } from '@expo/vector-icons';
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
 import { RectButton } from 'react-native-gesture-handler';
 
 interface Organization {
@@ -31,12 +26,9 @@ interface Organization {
 }
 
 export default function OrganizationData() {
-<<<<<<< HEAD
 
   const [category, setCategory] = useState();
-=======
   const [Organization, setOrganization] = useState<Organization>();
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: 24 }}>
@@ -47,13 +39,9 @@ export default function OrganizationData() {
         placeholder="joao@exemplo.com"
       />
 
-<<<<<<< HEAD
-      <Text style={styles.label}>Nome/Título</Text>
-=======
       <Text style={styles.title}>Dados da Instituição</Text>
 
       <Text style={styles.label}>Nome/Título *</Text>
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
       <TextInput
         style={styles.input}
         placeholder="Instituto PF"
@@ -79,18 +67,14 @@ export default function OrganizationData() {
 
       </Picker>
 
-      <Text style={styles.label}>País</Text>
+      <Text style={styles.label}>Telefone</Text>
       <TextInput
         style={styles.input}
         placeholder="87 9999 6666"
         value={Organization?.nome}
       />
 
-<<<<<<< HEAD
-      <Text style={styles.label}>Estado</Text>
-=======
       <Text style={styles.label}>País</Text>
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
       <TextInput
         style={styles.input}
         placeholder="Brasil"
@@ -114,59 +98,32 @@ export default function OrganizationData() {
       <Text style={styles.label}>Endereço</Text>
       <TextInput
         style={styles.input}
-<<<<<<< HEAD
-=======
         placeholder="Rua Gomes"
         value={Organization?.nome}
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
       />
 
       <Text style={styles.label}>CEP</Text>
       <TextInput
         style={styles.input}
-<<<<<<< HEAD
-      />
-
-      <Text style={styles.label}>Telefone(s)-(Opcional)</Text>
-      <TextInput
-        style={styles.input}
-      />
-
-      <Text style={styles.label}>E-mail</Text>
-      <TextInput
-        style={styles.input}
-      />
-
-      <Text style={styles.label}>Site - (Opcional)</Text>
-=======
         placeholder="123456 000"
         value={Organization?.nome}
       />
 
       <Text style={styles.label}>Site</Text>
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
       <TextInput
         style={styles.input}
         placeholder="paulofreire.com.br"
         value={Organization?.nome}
       />
 
-<<<<<<< HEAD
-      <Text style={styles.label}>Coordenador</Text>
-=======
       <Text style={styles.label}>Data da Fundação</Text>
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
       <TextInput
         style={styles.input}
         placeholder="22/02/2000"
         value={Organization?.nome}
       />
 
-<<<<<<< HEAD
-      <Text style={styles.label}>Data da realização</Text>
-=======
       <Text style={styles.label}>Coordenador</Text>
->>>>>>> 62a9f8ef652684df64c0bd06b28310ad0b5da93b
       <TextInput
         style={styles.input}
         placeholder="Joao Silva"

@@ -1,24 +1,43 @@
 import React,{useEffect , useState} from 'react';
 import {Feather} from '@expo/vector-icons';
-import { StyleSheet, Text, View, Dimensions, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TextInput, FlatList, Image } from 'react-native';
 import MapView, { Marker, Callout,PROVIDER_GOOGLE} from 'react-native-maps';
 import mapMarker from '../images/pin.png';
 import {useNavigation} from '@react-navigation/native';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
 import api from '../services/api';
 
 interface Organization {
-  id: number;
-  nome: string;
+  id:number;
+  nome:string;
+  email:String;
+  coordenador:string;
+  pais:string;
+  site:String;
+  telefones:number;
+  cidade:String;
+  estado:String;
+  endereco:String;
+  DatadeRealizacao: number;
+  NomedaRealizacao: String;
+  datafundacao:number;
+  info:number;
+  categoria:string;
   latitude:number;
-  longitude:number
+  longitude:number;
+  images: Array<{
+    id:number;
+    url:string;
+  }>;
+  autorizado: boolean;
 }
 
 export default function PFMap() {
     const [Organizations,setOrganizations]= useState<Organization[]>([]);
     const [FilterOrganizations,setFilterOrganizations]= useState<Organization[]>([]);
     const navigation = useNavigation();
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<String>('');
+    const [item,setitem]= useState<Organization[]>([]);
 
     useEffect(()=>{
         api.get('/pfs').then(response =>{
@@ -30,7 +49,8 @@ export default function PFMap() {
         navigation.navigate('PFDetails',{id});
     }
 
-    const searchFilterFunction = (text) => {
+    const searchFilterFunction = (text: String) => {
+      console.log('oioioio')
       if (text) {
         const newData = Organizations.filter(function (item) {
           const itemData = item.nome
@@ -40,27 +60,66 @@ export default function PFMap() {
           return itemData.indexOf(textData) > -1;
         });
         setFilterOrganizations(newData);
+        console.log('filter', FilterOrganizations)
         setSearch(text);
       } else {
-        setFilterOrganizations(Organizations);
+        setFilterOrganizations([]);
         setSearch(text);
       }
     }
 
-    const ItemView = ({ item }) => {
+    const ItemView = ( item: Organization ) => {
       return (
         // Flat List Item
-        <Text style={{}} onPress={() => getItem(item)}>
-          {item.id}
-          {'.'}
-          {item.nome}
-        </Text>
+        <View style={{
+          height: 50,
+          width: '80%',
+          backgroundColor: '#ddd',
+          marginHorizontal: 20,
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: 15,
+          borderRadius: 10
+
+        }} key={item.id}>
+          <Text style={{}} onPress={() => getItem(item)}>
+            {item.id}
+            {'. '}
+            {item.nome}
+            {' - '}
+            {item.endereco}
+          </Text>
+        </View>
       );
     }
+
+    const OrgList = FilterOrganizations.map((item, index) => {
+      return (
+        <View style={{
+          height: 50,
+          width: '80%',
+          backgroundColor: '#ddd',
+          marginHorizontal: 20,
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: 15,
+          borderRadius: 10
+
+        }} key={index}>
+          <Text style={{}} onPress={() => getItem(item)}>
+            {item.id}
+            {'. '}
+            {item.nome}
+            {' - '}
+            {item.endereco}
+          </Text>
+        </View>
+      )
+    })
   
-    const getItem = (item) => {
+    const getItem = (item: Organization) => {
       // Function for click on an item
-      alert('Id : ' + item.id + ' Title : ' + item.nome);
+      navigation.navigate('PFDetails', {id: item.id});
     };
 
     const ItemSeparatorView = () => {
@@ -84,68 +143,95 @@ export default function PFMap() {
 
     return(
         <View style={styles.container}>
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(text) => searchFilterFunction(text)}
-              value={search}
-              underlineColorAndroid="transparent"
-              placeholder="Pesquisar..."
-              onFocus={() => {}}
-            />
-            <RectButton style={styles.search} onPress={(text) => searchFilterFunction(text)}>
-              <Feather name="search" size={25} color="#FFF"/>
-            </RectButton>
-          </View>
-          <FlatList
-            data={FilterOrganizations}
-            keyExtractor={(item, index) => index.toString()}
-            ItemSeparatorComponent={ItemSeparatorView}
-            renderItem={ItemView}
-          />
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.map} 
-                initialRegion={{
-                    latitude: -8.9067535, 
-                    longitude: -36.4964962,
-                    latitudeDelta: 0.008,
-                    longitudeDelta: 0.008, 
-                }}
-            >
-              
-              {Organizations.map(Organization =>{
-                return(
-                  <Marker
-                  key={Organization.id}
-                  icon={mapMarker}
-                  calloutAnchor= {{
-                    x: 2.7,
-                    y: 0.8,//0.8
-                  }}
-                  coordinate={{
-                    latitude: Organization.latitude, 
-                    longitude:Organization.longitude,
-                  }}
-               >
-                 <Callout tooltip onPress={() => handleNavigateToPFDetails(Organization.id)}>
-                  <View style={styles.calloutContainer}>
-                    <Text style={styles.calloutText}>{Organization.nome}</Text>
-                  </View>
-                 </Callout>
-               </Marker>
-                );
-              })}
-
-            </MapView>
-
-            <View style={styles.footer}>
-              
-              <RectButton style={styles.createOrganizationButton} onPress={handleNavigateToCreateOrganization}>
-                <Feather name="plus" size={25} color="#FFF"/>
-                <Text style={styles.buttonText}> Instituição</Text>
+          <View style={{marginBottom: 5}}>
+            <View style={styles.searchContainer}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => searchFilterFunction(text)}
+                value={search}
+                underlineColorAndroid="transparent"
+                placeholder="Pesquisar..."
+                onFocus={() => {}}
+                clearTextOnFocus={true}
+              />
+              <RectButton style={styles.search} onPress={() => searchFilterFunction(search)}>
+                <Feather name="search" size={25} color="#FFF"/>
               </RectButton>
             </View>
+            <FlatList
+              data={FilterOrganizations}
+              keyExtractor={(item, index) => index.toString()}
+              ItemSeparatorComponent={ItemSeparatorView}
+              renderItem={({item}) => (
+                <>
+                  {item.autorizado &&
+                    <TouchableOpacity style={styles.item} onPress={() => getItem(item)}>
+                      <Text style={{fontSize: 16}}>
+                        {item.id}
+                        {'. '}
+                        {item.nome}
+                      </Text>
+                      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 10}}>
+                        <Image style={{ width: 12, resizeMode: 'contain'}} source={mapMarker}/>
+                        <Text style={{color: '#f00'}}>
+                          {item.endereco}, {item.cep}
+                        </Text>
+                      </View>
+
+                    </TouchableOpacity>
+                  }
+                </>
+              )}
+            />
+          </View>
+          {/* {OrgList} */}
+          <MapView
+              provider={PROVIDER_GOOGLE}
+              style={styles.map} 
+              initialRegion={{
+                  latitude: -8.9067535, 
+                  longitude: -36.4964962,
+                  latitudeDelta: 0.008,
+                  longitudeDelta: 0.008, 
+              }}
+          >
+            
+            {Organizations.map(Organization =>{
+              return(
+                <View key={Organization.id}>
+                  {Organization.autorizado && 
+                    <Marker
+                    icon={mapMarker}
+                    calloutAnchor= {{
+                      x: 2.7,
+                      y: 0.8,//0.8
+                    }}
+                    coordinate={{
+                      latitude: Organization.latitude, 
+                      longitude:Organization.longitude,
+                    }}
+                  >
+                    <Callout tooltip onPress={() => handleNavigateToPFDetails(Organization.id)}>
+                    <View style={styles.calloutContainer}>
+                      <Text style={styles.calloutText}>{Organization.nome}</Text>
+                      <Text style={styles.calloutText}>{Organization.endereco}</Text>
+                    </View>
+                    </Callout>
+                  </Marker>
+                  }
+                </View>
+              );
+            })}
+
+          </MapView>
+
+          <View style={styles.footer}>
+            
+            <RectButton style={styles.createOrganizationButton} onPress={handleNavigateToCreateOrganization}>
+              <Feather name="plus" size={25} color="#FFF"/>
+              <Text style={styles.buttonText}> Instituição</Text>
+            </RectButton>
+          </View>
 
         </View>
     );
@@ -160,6 +246,19 @@ const styles = StyleSheet.create({
     map:{
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+    },
+
+    item: {
+      height: 60,
+      width: '90%',
+      backgroundColor: '#ddd',
+      marginHorizontal: 20,
+      marginVertical: 5,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      padding: 15,
+      borderRadius: 10
+
     },
 
     searchContainer: {

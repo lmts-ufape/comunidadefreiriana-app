@@ -49,9 +49,7 @@ function handleNavigateToExit() {
 
       <View >
         <Text style={styles.descText}> 
-            Descrição teste! 
-            01:01 Am 
-            11/12/2020
+        Aplicativo desenvolvido no contexto do centenário do educador Paulo Freire (2021) que visa mapear e disponibilizar informações acerca da comunidade freiriana internacional a todos os interessados.
         </Text>
       </View>
 
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
     //fontSize: 15,
     lineHeight: 24,
     
-    marginTop: 20,
+    marginTop: 0,
     textAlign: 'center',
   },
 

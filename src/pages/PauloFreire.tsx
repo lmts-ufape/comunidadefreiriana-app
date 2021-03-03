@@ -22,24 +22,24 @@ export default function PauloFreire() {
       <View style={styles.buttonContainer}>
 
         <View style={styles.row}>
-            <RectButton style={styles.cardPF} onPress={ () => {}}>
+            <RectButton style={styles.cardPF} onPress={ () => Linking.openURL('http://memorial.paulofreire.org/conheca-paulo-freire.html')}>
               <Image style={styles.iconeConheca} source={iconeConheca} />
               <Text style={styles.cardTextPF}>Conheça {'\n'}Paulo Freire</Text>
             </RectButton>
 
-            <RectButton style={styles.card} onPress={ () => {}}>
+            <RectButton style={styles.card} onPress={ () => Linking.openURL('http://memorial.paulofreire.org/Linha_do_tempo/linha_do_tempo.html')}>
               <Image style={styles.iconeLTempo} source={iconeLinha} />
               <Text style={styles.cardText}>Linha do Tempo</Text>
             </RectButton>          
         </View>
 
         <View style={styles.row}>
-            <RectButton style={styles.card} onPress={ () => {}}>
+            <RectButton style={styles.card} onPress={ () => Linking.openURL('http://acervo.paulofreire.org:8080/xmlui/')}>
               <Image style={styles.iconeAcervo} source={iconeAcervo} />
               <Text style={styles.cardText}>Acervo Digital</Text>
             </RectButton>
 
-            <RectButton style={styles.card} onPress={ () => {}}>
+            <RectButton style={styles.card} onPress={ () => Linking.openURL('http://biblioteca.paulofreire.org/')}>
               <Image style={styles.iconeBibli} source={iconeBibli} />
               <Text style={styles.cardText}>Biblioteca</Text>
             </RectButton>        
@@ -47,12 +47,12 @@ export default function PauloFreire() {
         </View>
 
         <View style={styles.row}>
-            <RectButton style={styles.card} onPress={ () => {}}>
+            <RectButton style={styles.card} onPress={ () => Linking.openURL('http://glossario.paulofreire.org/')}>
               <Image style={styles.iconeAcervo} source={iconeGlossario} />
               <Text style={styles.cardText}>Glossário</Text>
             </RectButton>
 
-            <RectButton style={styles.card} onPress={ () => {}}>
+            <RectButton style={styles.card} onPress={ () => Linking.openURL('http://memorial.paulofreire.org/')}>
               <Image style={styles.iconeAcervo} source={iconeContato} />
               <Text style={styles.cardText}>Contato</Text>
             </RectButton>        
@@ -190,8 +190,9 @@ const styles = StyleSheet.create({
   },
 
   cardText: {
-    fontSize:15.5,
-    alignSelf: 'flex-start'
+    fontSize:15,
+    alignSelf: 'flex-start',
+    fontWeight: 'bold'
   },
 
   cardTextPF: {

@@ -9,24 +9,24 @@ import * as Location from 'expo-location';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface Organization {
-  id:number;
-  nome:string;
-  email:String;
-  telefone:number;
-  cidade:String;
-  estado:String;
-  pais:String;
-  endereco:String;
-  cep:String;
-  site:String;
-  coodenador:String;
+  id: number;
+  nome: string;
+  email: String;
+  telefone: number;
+  cidade: String;
+  estado: String;
+  pais: String;
+  endereco: String;
+  cep: String;
+  site: String;
+  coodenador: String;
   dataFundacao: Date;
-  info:String;
-  latitude:number;
-  longitude:number;
+  info: String;
+  latitude: number;
+  longitude: number;
   images: Array<{
-    id:number;
-    url:string;
+    id: number;
+    url: string;
   }>;
 }
 
@@ -51,8 +51,8 @@ export default function OrganizationData() {
   const [cep, setcep] = useState('');
   const [site, setsite] = useState('');
   const [coordenador, setCoordenador] = useState('');
-  const [dataFundacao, setdataFundacao] = useState(new Date(2000,11,17));
-  const [DatadeRealizacao, setsetDatadeRealizacao] = useState(new Date(2000,11,17));
+  const [dataFundacao, setdataFundacao] = useState(new Date(2000, 11, 17));
+  const [DatadeRealizacao, setsetDatadeRealizacao] = useState(new Date(2000, 11, 17));
   const [NomedaRealizacao, setNomedaRealizacao] = useState('');
   const [info, setinfo] = useState('');
   const [latitude, setlatitude] = useState('');
@@ -69,11 +69,11 @@ export default function OrganizationData() {
   const [show, setShow] = useState(false);
   const [showReal, setShowReal] = useState(false);
 
-  useEffect(()=>{
-    
-    
-},[]);
-  
+  useEffect(() => {
+
+
+  }, []);
+
   function validate() {
     if (
       nome === '' ||
@@ -84,26 +84,26 @@ export default function OrganizationData() {
       pais === '' ||
       endereco === '' ||
       cep === '' ||
-      site === '' || 
-      coordenador === '' || 
+      site === '' ||
+      coordenador === '' ||
       dataFundacao.toString() === '' ||
-      DatadeRealizacao.toString() === '' || 
-      NomedaRealizacao === '' || 
-      info === '' || 
+      DatadeRealizacao.toString() === '' ||
+      NomedaRealizacao === '' ||
+      info === '' ||
       images.uri === ''
-      ) {
-        return false;
+    ) {
+      return false;
     } else {
       return true;
     }
   }
 
   async function handleCreateOrphanage() {
-    if(!validate()){
+    if (!validate()) {
       Alert.alert('Ops!', 'Por favor, preencha todos os campos!');
       return false;
     }
-    
+
     const form = new FormData();
 
     // Permissão para localização
@@ -121,7 +121,7 @@ export default function OrganizationData() {
       Alert.alert('Endereço não encontrado!');
       return
     }
-    
+
     var photo = {
       uri: images.uri,
       type: 'image/jpeg',
@@ -147,12 +147,10 @@ export default function OrganizationData() {
       form.append('latitude', String(lat));
       form.append('longitude', String(long));
       form.append('images', photo);
-      console.log('result');
 
       const result = await api.post('/pfs', form);
-      console.log(result.data);
 
-      api.post('/sendEmail', {id: result.data.id, email: result.data.email});
+      api.post('/sendEmail', { id: result.data.id, email: result.data.email });
 
       Alert.alert(
         "Requisição enviada!",
@@ -165,11 +163,10 @@ export default function OrganizationData() {
 
     } catch (result) {
       alert('erro');
-      console.log(result);
     }
   }
 
-  async function handleCategoria(valor: any){
+  async function handleCategoria(valor: any) {
     //setcep(cep);
     await setcategoria(valor);
   }
@@ -207,7 +204,6 @@ export default function OrganizationData() {
     });
 
     //setimages(result.data);
-    console.log(result);
   }
 
   const pickImage = async () => {
@@ -223,8 +219,6 @@ export default function OrganizationData() {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setimages(result);
@@ -333,10 +327,10 @@ export default function OrganizationData() {
       />
 
       <Text style={styles.label}>Data da Fundação</Text>
-      <View style={{flexDirection: 'row', flex: 1}}>
+      <View style={{ flexDirection: 'row', flex: 1 }}>
         <TextInput
           style={styles.inputDate}
-          placeholder={`${((dataFundacao.getDate() )) + "/" + ((dataFundacao.getMonth() + 1)) + "/" + dataFundacao.getFullYear()}`}
+          placeholder={`${((dataFundacao.getDate())) + "/" + ((dataFundacao.getMonth() + 1)) + "/" + dataFundacao.getFullYear()}`}
           editable={false}
         />
         <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
@@ -364,10 +358,10 @@ export default function OrganizationData() {
       />
 
       <Text style={styles.label}>Data da Realização</Text>
-      <View style={{flexDirection: 'row', flex: 1}}>
+      <View style={{ flexDirection: 'row', flex: 1 }}>
         <TextInput
           style={styles.inputDate}
-          placeholder={`${((DatadeRealizacao.getDate() )) + "/" + ((DatadeRealizacao.getMonth() + 1)) + "/" + DatadeRealizacao.getFullYear()}`}
+          placeholder={`${((DatadeRealizacao.getDate())) + "/" + ((DatadeRealizacao.getMonth() + 1)) + "/" + DatadeRealizacao.getFullYear()}`}
           editable={false}
         />
         <TouchableOpacity style={styles.dateButton} onPress={showDatepickerReal}>
@@ -394,12 +388,12 @@ export default function OrganizationData() {
       />
 
       <Text style={styles.label}>Foto</Text>
-      {images.uri ? 
+      {images.uri ?
         <>
-          <Image 
-          style={styles.image} 
-          source={{ uri: images.uri }}/>
-          <TouchableOpacity style={styles.deleteImage} onPress={() => {setimages({})}}>
+          <Image
+            style={styles.image}
+            source={{ uri: images.uri }} />
+          <TouchableOpacity style={styles.deleteImage} onPress={() => { setimages({}) }}>
             <Feather name="trash" size={24} color="red" />
           </TouchableOpacity>
         </>
@@ -416,14 +410,14 @@ export default function OrganizationData() {
         value={info}
         onChangeText={setinfo}
       />
-      {validate() ? 
+      {validate() ?
         <RectButton style={styles.nextButton} onPress={handleCreateOrphanage}>
           <Text style={styles.nextButtonText}>Enviar</Text>
         </RectButton>
-      :
-      <View style={styles.nextButtonDisabled}>
-        <Text style={styles.nextButtonText}>Enviar</Text>
-      </View>
+        :
+        <View style={styles.nextButtonDisabled}>
+          <Text style={styles.nextButtonText}>Enviar</Text>
+        </View>
       }
     </ScrollView>
   )
@@ -459,7 +453,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  
+
   picker: {
     borderWidth: 1.4,
     borderColor: '#d3e2e6',

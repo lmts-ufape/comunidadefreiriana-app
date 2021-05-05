@@ -22,14 +22,11 @@ interface Organization {
   DatadeRealizacao: number;
   NomedaRealizacao: String;
   datafundacao: number;
-  info: number;
+  info: string;
   categoria: string;
-  latitude: number;
-  longitude: number;
-  images: Array<{
-    id: number;
-    url: string;
-  }>;
+  latitude: string;
+  longitude: string;
+  image: string;
   autorizado: boolean;
 }
 
@@ -49,8 +46,9 @@ export default function PFMap() {
     setSearch('');
     setFilterOrganizations([]);
     getLocation();
-    api.get('/pfs').then(response => {
-      setOrganizations(response.data);
+    api.get('/instituicao/index').then(response => {
+      console.log(response.data.data);
+      setOrganizations(response.data.data);
     });
   }, []);
 
@@ -245,8 +243,8 @@ export default function PFMap() {
                     y: 0.8,//0.8
                   }}
                   coordinate={{
-                    latitude: Organization.latitude,
-                    longitude: Organization.longitude,
+                    latitude: parseFloat(Organization.latitude),
+                    longitude: parseFloat(Organization.longitude),
                   }}
                 >
                   <Callout tooltip onPress={() => handleNavigateToPFDetails(Organization.id)}>

@@ -19,7 +19,7 @@ interface Organization {
   coordenador: string;
   pais: string;
   site: String;
-  telefones: number;
+  telefone: number;
   cidade: String;
   estado: String;
   endereco: String;
@@ -32,7 +32,7 @@ interface Organization {
   longitude: number;
   images: Array<{
     id: number;
-    url: string;
+    path: string;
   }>;
 }
 
@@ -42,8 +42,9 @@ export default function PFDetails() {
   const params = route.params as OrganizationDetailsRouteParams;
 
   useEffect(() => {
-    api.get(`pfs/${params.id}`).then(response => {
-      setOrganization(response.data);
+    api.get(`/instituicao/show/${params.id}`).then(response => {
+      setOrganization(response.data.data);
+      console.log(Organization)
     })
   }, [params.id])
 
@@ -64,12 +65,15 @@ export default function PFDetails() {
               <Image
                 key={images.id}
                 style={styles.image}
-                source={{ uri: images.url }}
+                source={{ uri: `http://sistemas.ufape.edu.br/comunidadefreiriana/${images.path}` }}
               />
 
             );
           })}
-
+          {/* <Image
+            style={styles.image}
+            source={{ uri: Organization.image }}
+          /> */}
 
         </ScrollView>
       </View>
@@ -77,7 +81,7 @@ export default function PFDetails() {
       <View style={styles.detailsContainer}>
         <Text style={styles.NomeInstituicao}>{Organization.nome}</Text>
 
-        <Text style={styles.ntelefone}>{Organization.telefones}</Text>
+        <Text style={styles.ntelefone}>{Organization.telefone}</Text>
         <Image style={styles.IconeTelefone} source={IconeTelefone} />
 
         <Text style={styles.site}>{Organization.site}</Text>
@@ -114,10 +118,6 @@ export default function PFDetails() {
 
         <Text style={styles.titulos}>Mais Informações</Text>
         <Text style={styles.textos}>{Organization.info}</Text>
-
-
-
-
 
       </View>
     </ScrollView>

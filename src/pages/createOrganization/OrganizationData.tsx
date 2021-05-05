@@ -40,7 +40,7 @@ interface ImageI {
 
 export default function OrganizationData() {
 
-  const [categoria, setcategoria] = useState('Instituto');
+  const [categoria, setcategoria] = useState('');
   const [nome, setnome] = useState('');
   const [email, setemail] = useState('');
   const [telefones, settelefones] = useState('');
@@ -121,6 +121,7 @@ export default function OrganizationData() {
       Alert.alert('Endereço não encontrado!');
       return
     }
+    console.log(images)
 
     var photo = {
       uri: images.uri,
@@ -136,25 +137,28 @@ export default function OrganizationData() {
       form.append('cidade', cidade);
       form.append('endereco', endereco);
       form.append('cep', String(cep));
-      form.append('telefones', String(telefones));
+      form.append('telefone', String(telefones));
       form.append('email', email);
       form.append('site', site);
       form.append('coordenador', coordenador);
-      form.append('datafundacao', String(dataFundacao));
-      form.append('DatadeRealizacao', String(DatadeRealizacao));
+      form.append('datafundacao', `${((dataFundacao.getDate())) + "/" + ((dataFundacao.getMonth() + 1)) + "/" + dataFundacao.getFullYear()}`);
+      form.append('DatadeRealizacao', `${((DatadeRealizacao.getDate())) + "/" + ((DatadeRealizacao.getMonth() + 1)) + "/" + DatadeRealizacao.getFullYear()}`);
       form.append('NomedaRealizacao', NomedaRealizacao);
       form.append('info', info);
       form.append('latitude', String(lat));
       form.append('longitude', String(long));
-      form.append('images', photo);
+      form.append('autorizado', false);
+      form.append('confirmacaoEmail', false);
+      form.append('image', photo);
 
-      const result = await api.post('/pfs', form);
+      const result = await api.post('/instituicao/store', form);
 
-      api.post('/sendEmail', { id: result.data.id, email: result.data.email });
+      //api.post('/sendEmail', { id: result.data.id, email: result.data.email });
 
+      console.log(result)
       Alert.alert(
         "Requisição enviada!",
-        "Por favor, confirme o email que enviamos para você.",
+        "Aguarde a confirmação dos nossos moderadores.",
         [
           { text: "OK", onPress: () => navigation.goBack() }
         ],
@@ -162,7 +166,12 @@ export default function OrganizationData() {
       );
 
     } catch (result) {
-      alert('erro');
+      console.log(result)
+      if (result.data.message) {
+        alert(`Erro ${result.data.message}`);
+      } else {
+        alert(`Erro no envio.`);
+      }
     }
   }
 
@@ -245,6 +254,14 @@ export default function OrganizationData() {
         placeholder="Instituto PF"
         value={nome}
         onChangeText={setnome}
+      />
+
+      <Text style={styles.label}>Categoria</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Instituto/Homenagem"
+        value={categoria}
+        onChangeText={setcategoria}
       />
 
       {/* <Text style={styles.label}>Categoria</Text>
